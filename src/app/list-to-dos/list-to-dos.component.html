@@ -1,0 +1,18 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Descirption</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let list of toDos">
+      <td>{{list.id}}</td>
+      <td>{{list.description}}</td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+
+<button (click)="goBackToWelcomePage()"> ⬅️Back</button>
