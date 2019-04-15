@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
       this.passwordInput === this.password
     ) {
       // alert("it works");
-      this.router.navigate(["welcome"]);
+      this.router.navigate(["welcome", this.username]);
     } else {
       // alert("wrong credentials");
       this.router.navigate(["error"]);
