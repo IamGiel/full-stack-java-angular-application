@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { routerNgProbeToken } from "@angular/router/src/router_module";
 
 @Component({
@@ -9,9 +9,13 @@ import { routerNgProbeToken } from "@angular/router/src/router_module";
 })
 export class WelcomeComponent implements OnInit {
   name;
-  constructor(private route: ActivatedRoute) {}
+  constructor(private activatedRoute: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
-    this.name = this.route.snapshot.params["name"];
+    this.name = this.activatedRoute.snapshot.params["name"];
+  }
+
+  goToDoListPage() {
+    this.router.navigate(["list-to-dos"]);
   }
 }

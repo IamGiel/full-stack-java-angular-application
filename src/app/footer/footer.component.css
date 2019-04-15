@@ -1,0 +1,8 @@
+.myFooter {
+  position: absolute;
+  bottom: 0px;
+  height: 50px;
+  border: 1px solid;
+  width: 100%;
+  text-align: center;
+}
