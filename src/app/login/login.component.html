@@ -6,11 +6,12 @@
       <form (submit)="handLogin($event)">
         <div class="form-group">
           <label for="username">Username</label>
-          <input type="text" [(ngModel)]="username" name="username" placeholder={{username}} class="form-control" />
+          <input type="text" [(ngModel)]="usernameInput" name="username" placeholder="username" class="form-control" />
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" [(ngModel)]="password" name="password" placeholder={{password}} class="form-control" />
+          <input type="password" [(ngModel)]="passwordInput" name="password" placeholder="password"
+            class="form-control" />
         </div>
         <div class="form-group">
           <button class="btn btn-primary">Login</button>
