@@ -1,0 +1,13 @@
+<div class="container" *ngIf="!this.hardCodedAuthService.isUserLoggedIn()">
+  <div class="jumbotron">
+    <h1>Welcome To YourSpace! </h1>
+    <button class="btn btn-success" [routerLink]="['/login']" routerLinkActive="router-link-active">Log in </button>
+  </div>
+</div>
+
+<div class="container" *ngIf="this.hardCodedAuthService.isUserLoggedIn()">
+  <div class="jumbotron">
+    <h1> {{userName}}! discover what else you can do with - Your Space -. </h1>
+    <!-- <button class="btn btn-success" [routerLink]="['/login']" routerLinkActive="router-link-active">Log in </button> -->
+  </div>
+</div>

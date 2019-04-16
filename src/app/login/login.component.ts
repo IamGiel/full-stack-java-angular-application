@@ -8,9 +8,6 @@ import { HardcodedAuthenticationService } from "../service/hardcoded-authenticat
   styleUrls: ["./login.component.css"]
 })
 export class LoginComponent implements OnInit {
-  username = "Gel";
-  password = "password";
-
   //userInput
   usernameInput = "";
   passwordInput = "";
@@ -40,7 +37,7 @@ export class LoginComponent implements OnInit {
       )
     ) {
       // alert("it works");
-      this.router.navigate(["welcome", this.username]);
+      this.router.navigate(["welcome", this.newUserCredential.username]);
     } else {
       // alert("wrong credentials");
       this.router.navigate(["error"]);

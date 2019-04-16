@@ -10,9 +10,11 @@ import { ErrorComponent } from './error/error.component';
 import { ListToDosComponent } from './list-to-dos/list-to-dos.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
-  declarations: [AppComponent, WelcomeComponent, LoginComponent, ErrorComponent, ListToDosComponent, HeaderComponent, FooterComponent],
+  declarations: [AppComponent, WelcomeComponent, LoginComponent, ErrorComponent, ListToDosComponent, HeaderComponent, FooterComponent, LandingPageComponent, LogoutComponent],
   imports: [FormsModule, ReactiveFormsModule, BrowserModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent]
