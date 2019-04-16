@@ -1,7 +1,11 @@
 <div class="container" *ngIf="!this.hardCodedAuthService.isUserLoggedIn()">
+  <div style="height: 80px"></div>
   <div class="jumbotron">
-    <h1>Welcome To YourSpace! </h1>
-    <button class="btn btn-success" [routerLink]="['/login']" routerLinkActive="router-link-active">Log in </button>
+    <h1 class="float-none">Welcome To YourSpace!
+      <button class="btn btn-success float-right" [routerLink]="['/login']" routerLinkActive="router-link-active">Log in
+      </button>
+    </h1>
+
   </div>
 </div>
 
