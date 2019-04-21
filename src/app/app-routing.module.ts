@@ -27,6 +27,11 @@ const routes: Routes = [
     component: LogoutComponent,
     canActivate: [RouteGuardsService]
   },
+  // {
+  //   path: "welcome",
+  //   component: WelcomeComponent,
+  //   canActivate: [RouteGuardsService]
+  // },
   // if user types wrong url paths
   { path: "**", component: ErrorComponent }
 ];
