@@ -10,5 +10,9 @@
     <div>
       <button class="btn btn-success" (click)="getWelcomeMessage()">Welcome Button</button>
     </div>
+
+
   </div>
+
+  <h1 *ngIf="welcomeMessageReceived">{{customMessage}}</h1>
 </div>
