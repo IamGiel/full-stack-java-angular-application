@@ -8,7 +8,7 @@
     </p>
 
     <div>
-      <button class="btn btn-success" (click)="getWelcomeMessage()">Welcome Button</button>
+      <button class="btn btn-success" (click)="getPathWithName()">Welcome Button</button>
     </div>
 
 
@@ -16,5 +16,6 @@
 
   <h1 *ngIf="welcomeMessageReceived">{{customMessage}}</h1>
   <h1 *ngIf="errorMessageReceived">{{errorResponse}}</h1>
+  <h1 *ngIf="pathNameProvided"> {{pathName}}</h1>
 
 </div>
