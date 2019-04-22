@@ -10,9 +10,11 @@ import { WelcomeDataService } from "../service/welcome-data.service";
 })
 export class WelcomeComponent implements OnInit {
   name;
+  pathName;
   customMessage;
   welcomeMessageReceived = false;
   errorMessageReceived = false;
+  pathNameProvided = false;
   errorResponse;
   constructor(
     private welcomeService: WelcomeDataService,
@@ -22,13 +24,12 @@ export class WelcomeComponent implements OnInit {
 
   ngOnInit() {
     this.name = this.activatedRoute.snapshot.params["name"];
+    console.log(this.name);
+    // console.log(this.pathName);
   }
 
   getWelcomeMessage() {
-    console.log(this.welcomeService.executeHelloWorldBeanService());
     this.welcomeService.executeHelloWorldBeanService().subscribe(
-      // what we do when we get result
-
       response => {
         this.welcomeMessageReceived = true;
         this.handleSuccessfulResponse(response.message);
@@ -39,20 +40,37 @@ export class WelcomeComponent implements OnInit {
         this.errorMessageReceived = true;
         this.handleErrorResponse(error);
         this.errorResponse = this.handleErrorResponse(error);
-        console.log("error response " + this.errorResponse);
       }
     );
-    this.handleErrorResponse(this.errorResponse);
-    console.log("last line of getWelcomeMessage");
+
+    // this.getPathWithName(this.name);
+  }
+
+  getPathWithName() {
+    this.welcomeService.executeHelloPathName(this.name).subscribe(
+      response => {
+        this.pathNameProvided = true;
+        this.handleSuccessfulResponse(response);
+        this.pathName = response.message;
+      },
+
+      error => {
+        console.log(error);
+        this.errorMessageReceived = true;
+        this.handleErrorResponse(error);
+        this.errorResponse = this.handleErrorResponse(error);
+      }
+    );
   }
 
   handleSuccessfulResponse(response) {
     console.log("handleSuccessfulResponse " + JSON.stringify(response));
+    return response.message;
   }
 
   handleErrorResponse(error) {
-    console.log("handleErrorResponse " + JSON.stringify(error.error.message));
-    return error.error.message;
+    console.log("handleErrorResponse " + JSON.stringify(error));
+    return error;
   }
 
   goToDoListPage() {
