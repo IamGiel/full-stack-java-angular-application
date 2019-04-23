@@ -13,7 +13,10 @@ import { routerNgProbeToken } from "@angular/router/src/router_module";
 })
 export class ListToDosComponent implements OnInit {
   toDos: todo[];
-
+  isCompleted = false;
+  deletedSuccessfully = false;
+  deletedId;
+  descriptionOfCompletedList;
   // [
   //   {
   //     id: 1,
@@ -48,8 +51,31 @@ export class ListToDosComponent implements OnInit {
     this.todoService.retrieveAllTodos(this.name).subscribe(response => {
       console.log(response);
       this.toDos = response;
+      console.log(typeof this.toDos);
     });
   }
+
+  deleteThisById(event) {
+    this.descriptionOfCompletedList = event.target.value;
+    this.deletedId = event.target.id;
+    console.log(event.target.value);
+    this.todoService
+      .deleteItemFromList(this.name, this.deletedId)
+      .subscribe(res => {
+        console.log(res);
+      });
+
+    this.deletedSuccessfully = true;
+    setTimeout(() => {
+      this.deletedSuccessfully = false;
+      this.todoService.retrieveAllTodos(this.name).subscribe(response => {
+        console.log(response);
+        this.toDos = response;
+        console.log(typeof this.toDos);
+      });
+    }, 3000);
+  }
+  // this.router.navigate([`users/${this.name}/list-to-dos`]);
 
   goBackToWelcomePage() {
     //navigate to last page

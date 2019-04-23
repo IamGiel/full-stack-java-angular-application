@@ -1,9 +1,15 @@
+<div class="alert alert-success" *ngIf="deletedSuccessfully">
+  <p>You have successfully completed list: {{deletedId}}. {{descriptionOfCompletedList}}</p>
+</div>
+
 <table class="table table-striped">
   <thead>
     <tr>
       <th>#</th>
       <th>Descirption</th>
       <th>Target Date:</th>
+      <th>isCompleted?</th>
+      <th>Action</th>
     </tr>
   </thead>
   <tbody>
@@ -11,6 +17,10 @@
       <td>{{list.id}}</td>
       <td>{{list.description}}</td>
       <td>{{list.setDate | date:'fullDate'}}</td>
+      <td>{{list.isDone?"no":"yes"}}</td>
+      <td><button id="{{list.id}}" class="btn btn-warning" value="{{list.description}}"
+          (click)="deleteThisById($event)">delete</button></td>
+
     </tr>
   </tbody>
 </table>

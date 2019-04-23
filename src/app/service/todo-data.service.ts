@@ -16,4 +16,13 @@ export class TodoDataService {
 
     return thisData;
   }
+
+  deleteItemFromList(Gel, id) {
+    console.log("retrieveAllTodos ");
+    let thisData = this.http.delete<todo[]>(
+      `http://localhost:9191/users/${Gel}/todo/${id}`
+    );
+
+    return thisData;
+  }
 }
