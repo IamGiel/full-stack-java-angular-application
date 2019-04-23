@@ -18,7 +18,7 @@ const routes: Routes = [
     canActivate: [RouteGuardsService]
   },
   {
-    path: "list-to-dos",
+    path: "users/:name/list-to-dos",
     component: ListToDosComponent,
     canActivate: [RouteGuardsService]
   },

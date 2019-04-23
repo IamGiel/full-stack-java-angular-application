@@ -45,7 +45,7 @@
 
         <div class="dropdown-menu" *ngIf="HardcodedAuthenticationService.isUserLoggedIn()">
           <!-- Dropdown menu links -->
-          <a class="dropdown-item" [routerLink]="['/list-to-dos']" routerLinkActive="router-link-active">ToDo's List</a>
+          <a class="dropdown-item" (click)="toDoListsPage()">ToDo's List</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" (click)="logout()">Logout</a>
         </div>
