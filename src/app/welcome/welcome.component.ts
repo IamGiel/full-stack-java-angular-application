@@ -23,7 +23,8 @@ export class WelcomeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.name = this.activatedRoute.snapshot.params["name"];
+    // this.name = this.activatedRoute.snapshot.params["name"];
+    this.name = sessionStorage.getItem("authenticateUser");
     console.log(this.name);
     // console.log(this.pathName);
   }
@@ -73,7 +74,8 @@ export class WelcomeComponent implements OnInit {
     return error;
   }
 
-  goToDoListPage() {
-    this.router.navigate(["list-to-dos"]);
+  goToDoListPage(name) {
+    name = this.name;
+    this.router.navigate([`/users/${name}/list-to-dos`]);
   }
 }

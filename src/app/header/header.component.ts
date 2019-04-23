@@ -22,6 +22,11 @@ export class HeaderComponent implements OnInit {
     console.log("isUserLoggedIn " + this.isUserLoggedIn);
   }
 
+  toDoListsPage() {
+    //  this.HardcodedAuthenticationService.userLoggedOut();
+    this.router.navigate([`/users/${this.userName}/list-to-dos`]);
+  }
+
   logout() {
     this.HardcodedAuthenticationService.userLoggedOut();
     this.router.navigate(["/logout"]);

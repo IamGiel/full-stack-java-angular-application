@@ -3,12 +3,14 @@
     <tr>
       <th>#</th>
       <th>Descirption</th>
+      <th>Target Date:</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let list of toDos">
       <td>{{list.id}}</td>
       <td>{{list.description}}</td>
+      <td>{{list.setDate | date:'fullDate'}}</td>
     </tr>
   </tbody>
 </table>
