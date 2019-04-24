@@ -1,30 +1,73 @@
-<div class="alert alert-success" *ngIf="deletedSuccessfully">
-  <p>You have successfully completed list: {{deletedId}}. {{descriptionOfCompletedList}}</p>
+<div class="container" style="margin-top:80px">
+  <div class="alert alert-success" *ngIf="deletedSuccessfully">
+    <p>You have successfully completed list: {{deletedId}}. {{descriptionOfCompletedList}}</p>
+  </div>
+  <ng-container *ngIf="!loading">
+
+    <table class="table table-striped">
+
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Descirption</th>
+          <th>Target Date:</th>
+          <th>isCompleted?</th>
+          <th>Action</th>
+          <th>Update</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let list of toDos">
+          <td>{{list.id}}</td>
+          <td>{{list.description}}</td>
+          <td>{{list.setDate | date:'fullDate'}}</td>
+          <td>{{list.isDone?"yes":"no"}}</td>
+          <td><button id="{{list.id}}" class="btn btn-warning" value="{{list.description}}"
+              (click)="deleteThisById($event)">delete</button></td>
+          <td><button id="{{list.id}}" class="btn btn-info" value="{{list.description}}"
+              (click)="updateThisById($event)">update</button></td>
+
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+
+  <ng-container *ngIf="loading">
+    <div class="container">
+      <div class="alert alert-warning">
+        Loading data
+      </div>
+    </div>
+
+  </ng-container>
+
+
+  <br>
+
+  <button class="btn btn-info" (click)="goBackToWelcomePage()" style="margin-right: 20px"> ⬅️ Back </button>
+  <button class="btn btn-success" data-toggle="modal" data-target="#exampleModal"> ➕ Add to
+    lists</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Lets jot it here...</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <app-add-to-lists [addedAlist]="reloadList()"></app-add-to-lists>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
 </div>
-
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Descirption</th>
-      <th>Target Date:</th>
-      <th>isCompleted?</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let list of toDos">
-      <td>{{list.id}}</td>
-      <td>{{list.description}}</td>
-      <td>{{list.setDate | date:'fullDate'}}</td>
-      <td>{{list.isDone?"no":"yes"}}</td>
-      <td><button id="{{list.id}}" class="btn btn-warning" value="{{list.description}}"
-          (click)="deleteThisById($event)">delete</button></td>
-
-    </tr>
-  </tbody>
-</table>
-
-<br>
-
-<button class="btn btn-info" (click)="goBackToWelcomePage()"> ⬅️ Back</button>

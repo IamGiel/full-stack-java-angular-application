@@ -15,6 +15,8 @@ export class ListToDosComponent implements OnInit {
   toDos: todo[];
   isCompleted = false;
   deletedSuccessfully = false;
+  loading = false;
+  addedList = false;
   deletedId;
   descriptionOfCompletedList;
   // [
@@ -47,12 +49,27 @@ export class ListToDosComponent implements OnInit {
   ngOnInit() {
     this.name = this.activatedRoute.snapshot.params["name"];
     console.log(this.name);
+    this.loadAllList();
+  }
 
-    this.todoService.retrieveAllTodos(this.name).subscribe(response => {
-      console.log(response);
-      this.toDos = response;
-      console.log(typeof this.toDos);
-    });
+  reloadList() {
+    if (this.addedList == true) {
+      this.loadAllList();
+    }
+  }
+
+  loadAllList() {
+    this.todoService.retrieveAllTodos(this.name).subscribe(
+      response => {
+        console.log(response);
+        this.toDos = response;
+        console.log(typeof this.toDos);
+      },
+      error => {
+        this.loading = true;
+        console.log(error);
+      }
+    );
   }
 
   deleteThisById(event) {
