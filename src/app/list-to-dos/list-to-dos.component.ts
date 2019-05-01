@@ -103,6 +103,7 @@ export class ListToDosComponent implements OnInit {
     this.todoService.getSingleTodoItem(this.userName, id).subscribe(
       res => {
         console.log(res);
+        data => (this.toDos = data);
         this.description = res.description;
         this.date = res.setDate;
       },
