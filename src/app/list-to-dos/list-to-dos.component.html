@@ -71,7 +71,7 @@
             <div class="form-group">
               <label for="date">Target Date:</label>
               <input name="date" type="date" class="form-control" id="date" placeholder="Complete it on what date?"
-                [(ngModel)]="date">
+                [ngModel]="date | date:'yyyy-MM-dd'" (ngModelChange)="date=$event">
             </div>
 
             <button type="submit" class="btn btn-primary" [disabled]="disableSubmitBtn">Submit</button>
