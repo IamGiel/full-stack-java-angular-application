@@ -14,8 +14,6 @@ import { LandingPageComponent } from "./landing-page/landing-page.component";
 import { LogoutComponent } from "./logout/logout.component";
 import { HttpClientModule } from "@angular/common/http";
 
-import { AddToListsComponent } from "./entities/add-to-lists/add-to-lists.component";
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,8 +24,7 @@ import { AddToListsComponent } from "./entities/add-to-lists/add-to-lists.compon
     HeaderComponent,
     FooterComponent,
     LandingPageComponent,
-    LogoutComponent,
-    AddToListsComponent
+    LogoutComponent
   ],
   imports: [
     FormsModule,

@@ -25,7 +25,7 @@
           <td><button id="{{list.id}}" class="btn btn-warning" value="{{list.description}}"
               (click)="deleteThisById($event)">delete</button></td>
           <td><button id="{{list.id}}" class="btn btn-info" value="{{list.description}}"
-              (click)="updateThisById($event)">update</button></td>
+              (click)="updateThisById($event)" data-toggle="modal" data-target="#exampleModal">update</button></td>
 
         </tr>
       </tbody>
@@ -45,7 +45,7 @@
   <br>
 
   <button class="btn btn-info" (click)="goBackToWelcomePage()" style="margin-right: 20px"> ⬅️ Back </button>
-  <button class="btn btn-success" data-toggle="modal" data-target="#exampleModal"> ➕ Add to
+  <button class="btn btn-success" data-toggle="modal" data-target="#exampleModal" (click)="popModalOpen()"> ➕ Add to
     lists</button>
 
   <!-- Modal -->
@@ -60,12 +60,28 @@
           </button>
         </div>
         <div class="modal-body">
-          <app-add-to-lists [addedAlist]="reloadList()"></app-add-to-lists>
+          <form #myForm="ngForm" (submit)="saveNewList($event)">
+
+
+            <div class="form-group">
+              <label for="description">Describe it:</label>
+              <input name="description" type="text" class="form-control" id="description"
+                placeholder="Describe the activity" [(ngModel)]="description">
+            </div>
+            <div class="form-group">
+              <label for="date">Target Date:</label>
+              <input name="date" type="date" class="form-control" id="date" placeholder="Complete it on what date?"
+                [(ngModel)]="date">
+            </div>
+
+            <button type="submit" class="btn btn-primary" [disabled]="disableSubmitBtn">Submit</button>
+          </form>
+
         </div>
-        <!-- <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div> -->
+        <div class=" modal-footer">
+          <button *ngIf="!disableSubmitBtn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+        </div>
       </div>
     </div>
   </div>
