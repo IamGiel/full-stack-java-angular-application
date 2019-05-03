@@ -25,7 +25,8 @@
           <td><button id="{{list.id}}" class="btn btn-warning" value="{{list.description}}"
               (click)="deleteThisById($event)">delete</button></td>
           <td><button id="{{list.id}}" class="btn btn-info" value="{{list.description}}"
-              (click)="updateThisById($event)" data-toggle="modal" data-target="#exampleModal">update</button></td>
+              (click)="getSingleTodoDetails($event)" data-toggle="modal" data-target="#exampleModal">update</button>
+          </td>
 
         </tr>
       </tbody>
@@ -59,7 +60,9 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
+
+        <!-- savenew list -->
+        <div class="modal-body" *ngIf="!showUpdateBtn">
           <form #myForm="ngForm" (submit)="saveNewList($event)">
 
 
@@ -75,13 +78,37 @@
             </div>
 
             <button type="submit" class="btn btn-primary" [disabled]="disableSubmitBtn">Submit</button>
+
+
           </form>
 
         </div>
-        <div class=" modal-footer">
-          <button *ngIf="!disableSubmitBtn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+
+
+        <!-- update list -->
+        <div class="modal-body" *ngIf="showUpdateBtn">
+          <form #myForm="ngForm" (submit)="updateAnItem($event)">
+            <div class="form-group">
+              <label for="description">Update the description:</label>
+              <input name="description" type="text" class="form-control" id="description"
+                placeholder="Describe the activity" [(ngModel)]="updateDescription">
+            </div>
+            <div class="form-group">
+              <label for="date">Update the target date:</label>
+              <input name="date" type="date" class="form-control" id="date" placeholder="Complete it on what date?"
+                [ngModel]="updateDate | date:'yyyy-MM-dd'" (ngModelChange)="date=$event">
+            </div>
+
+            <!-- <button type="submit" class="btn btn-primary" [disabled]="disableSubmitBtn">Submit</button> -->
+
+            <div class=" modal-footer">
+              <button *ngIf="!disableSubmitBtn" type="button" class="btn btn-secondary">Close</button>
+              <button type="submit" class="btn btn-primary">update changes</button>
+            </div>
+          </form>
+
         </div>
+
       </div>
     </div>
   </div>

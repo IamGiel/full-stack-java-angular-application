@@ -9,6 +9,10 @@ const httpOptions = {
   })
 };
 
+const headers = new HttpHeaders()
+  .set("Content-Type", "application/json")
+  .set("Accept", "text/plain");
+
 @Injectable({
   providedIn: "root"
 })
@@ -16,7 +20,7 @@ export class TodoDataService {
   constructor(private http: HttpClient) {}
 
   retrieveAllTodos(Gel) {
-    console.log("retrieveAllTodos ");
+    console.log("get all todo ");
     let thisData = this.http.get<todo[]>(
       ` http://localhost:9191/users/${Gel}/all-todos`
     );
@@ -25,7 +29,7 @@ export class TodoDataService {
   }
 
   getSingleTodoItem(Gel, id) {
-    console.log("retrieveAllTodos ");
+    console.log("get single todo ");
     let thisData = this.http.get<todo[]>(
       ` http://localhost:9191/users/${Gel}/todo/${id}`
     );
@@ -34,15 +38,25 @@ export class TodoDataService {
   }
 
   deleteItemFromList(Gel, id) {
-    console.log("retrieveAllTodos ");
+    console.log("delete a todo ");
     let thisData = this.http.delete<todo[]>(
       `http://localhost:9191/users/${Gel}/todo/${id}`
     );
 
     return thisData;
   }
+  // /users/{user}/todo/{id}
+  updateAnItem(Gel, id, body: any) {
+    console.log("update to do ");
+    let thisData = this.http.put(
+      ` http://localhost:9191/users/${Gel}/todo/${id}`,
+      body
+    );
+
+    return thisData;
+  }
   saveNewList(Gel, body: todo) {
-    console.log("saving a new list");
+    console.log("saving a new todo");
     let thisData = this.http.post<todo[]>(
       `http://localhost:9191/users/${Gel}/todo`,
       body,
