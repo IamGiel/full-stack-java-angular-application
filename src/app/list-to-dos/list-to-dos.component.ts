@@ -21,12 +21,16 @@ export class ListToDosComponent implements OnInit {
   deletedId;
   closeThisModal = false;
   disableSubmitBtn = false;
+  showUpdateBtn = false;
+  updateDescription;
+  updateDate;
   // modal stuff
   id;
   userName;
   description: any;
   date;
   payload: any = {};
+  updatedPayload: any = {};
   descriptionOfCompletedList;
 
   name: any = sessionStorage.getItem("authenticateUser");
@@ -57,6 +61,32 @@ export class ListToDosComponent implements OnInit {
     return isoDate;
   }
 
+  updateAnItem(event) {
+    event.preventDefault();
+    let id = parseInt(this.id);
+    console.log(event);
+    let date = new Date();
+    date.toISOString().substring(0, 10);
+
+    this.updatedPayload.description = this.updateDescription;
+    this.updatedPayload.setDate = this.updateDate;
+    this.updatedPayload.isDone = false;
+    this.updatedPayload.id = id;
+
+    console.log(JSON.stringify(this.updatedPayload));
+    this.todoService
+      .updateAnItem(this.name, this.updatedPayload.id, this.updatedPayload)
+      .subscribe(
+        res => {
+          console.log("this is res " + JSON.stringify(res));
+          this.loadAllList();
+        },
+        err => {
+          console.log(err);
+        }
+      );
+  }
+
   saveNewList(event) {
     console.log("saving");
     event.preventDefault();
@@ -65,7 +95,7 @@ export class ListToDosComponent implements OnInit {
     this.payload.setDate = this.date;
     this.payload.isDone = false;
     console.log("this is payload " + JSON.stringify(this.payload));
-    this.todoService.saveNewList(this.userName, this.payload).subscribe(
+    this.todoService.saveNewList(this.name, this.payload).subscribe(
       response => {
         console.log(response);
         this.resetForm();
@@ -96,16 +126,22 @@ export class ListToDosComponent implements OnInit {
     );
   }
 
-  updateThisById(event, id) {
+  getSingleTodoDetails(event, id) {
+    this.showUpdateBtn = true;
     console.log(event.target.id);
-    id = event.target.id;
+    this.id = event.target.id;
 
-    this.todoService.getSingleTodoItem(this.userName, id).subscribe(
+    this.todoService.getSingleTodoItem(this.userName, this.id).subscribe(
       res => {
         console.log(res);
-        data => (this.toDos = data);
-        this.description = res.description;
-        this.date = res.setDate;
+        let data: any = res;
+        console.log(data);
+        this.updateDescription = data.description;
+        this.updateDate = data.setDate;
+
+        this.payload.description = this.description;
+        this.payload.setDate = this.date;
+        this.payload.isDone = false;
       },
       err => {
         console.log(err);
@@ -142,5 +178,6 @@ export class ListToDosComponent implements OnInit {
 
   popModalOpen() {
     this.closeThisModal = true;
+    this.showUpdateBtn = false;
   }
 }
