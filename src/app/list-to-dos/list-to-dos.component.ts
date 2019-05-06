@@ -13,7 +13,7 @@ import { routerNgProbeToken } from "@angular/router/src/router_module";
 })
 export class ListToDosComponent implements OnInit {
   toDos: todo[];
-  isCompleted = false;
+  isCompleted: boolean;
   deletedSuccessfully = false;
   loading = false;
   addedList = false;
@@ -55,22 +55,32 @@ export class ListToDosComponent implements OnInit {
   }
 
   generateDate(date) {
-    // date = this.date;
-    let isoDate = new Date(date).toISOString();
-    console.log("this is date" + isoDate);
-    return isoDate;
+    var current = new Date(date); //'Mar 11 2015' current.getTime() = 1426060964567
+    var followingDay = new Date(current.getTime() + 86400000); // + 1 day in ms
+    followingDay.toLocaleDateString();
+    console.log("this is follwong day " + followingDay.toLocaleDateString());
+
+    return followingDay.toLocaleDateString();
+
+    // // date = this.date;
+    // let isoDate = new Date(date).toISOString();
+    // console.log("this is date" + isoDate);
+    // return isoDate;
   }
 
   updateAnItem(event) {
     event.preventDefault();
     let id = parseInt(this.id);
-    console.log(event);
-    let date = new Date();
-    date.toISOString().substring(0, 10);
+    this.generateDate(this.date);
+    this.updateDate = this.date.toLocaleString("en-US", {
+      timeZone: "America/New_York"
+    });
 
     this.updatedPayload.description = this.updateDescription;
     this.updatedPayload.setDate = this.updateDate;
-    this.updatedPayload.isDone = false;
+    console.log(this.updateDate);
+    this.setIsDone();
+    this.updatedPayload.isDone = this.isCompleted;
     this.updatedPayload.id = id;
 
     console.log(JSON.stringify(this.updatedPayload));
@@ -87,13 +97,26 @@ export class ListToDosComponent implements OnInit {
       );
   }
 
+  setIsDone() {
+    let selectedDate = new Date(this.updateDate);
+    let now = new Date();
+    if (selectedDate < now) {
+      this.isCompleted = true;
+      alert("true");
+    } else {
+      this.isCompleted = false;
+      alert("false");
+    }
+  }
+
   saveNewList(event) {
     console.log("saving");
     event.preventDefault();
     this.generateDate(this.date);
     this.payload.description = this.description;
     this.payload.setDate = this.date;
-    this.payload.isDone = false;
+    this.setIsDone();
+    this.payload.isDone = this.isCompleted;
     console.log("this is payload " + JSON.stringify(this.payload));
     this.todoService.saveNewList(this.name, this.payload).subscribe(
       response => {

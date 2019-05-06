@@ -20,7 +20,7 @@
         <tr *ngFor="let list of toDos">
           <td>{{list.id}}</td>
           <td>{{list.description}}</td>
-          <td>{{list.setDate | date:'fullDate'}}</td>
+          <td>{{list.setDate | date:'yyyy-MM-dd'}}</td>
           <td>{{list.isDone?"yes":"no"}}</td>
           <td><button id="{{list.id}}" class="btn btn-warning" value="{{list.description}}"
               (click)="deleteThisById($event)">delete</button></td>
@@ -63,7 +63,7 @@
 
         <!-- savenew list -->
         <div class="modal-body" *ngIf="!showUpdateBtn">
-          <form #myForm="ngForm" (submit)="saveNewList($event)">
+          <form #saveNewListForm="ngForm" (ngSubmit)="!saveNewListForm.invalid && saveNewList($event)">
 
 
             <div class="form-group">
@@ -87,7 +87,7 @@
 
         <!-- update list -->
         <div class="modal-body" *ngIf="showUpdateBtn">
-          <form #myForm="ngForm" (submit)="updateAnItem($event)">
+          <form #updateListForm="ngForm" (ngSubmit)="!updateListForm.invalid && updateAnItem($event)">
             <div class="form-group">
               <label for="description">Update the description:</label>
               <input name="description" type="text" class="form-control" id="description"
@@ -97,12 +97,13 @@
               <label for="date">Update the target date:</label>
               <input name="date" type="date" class="form-control" id="date" placeholder="Complete it on what date?"
                 [ngModel]="updateDate | date:'yyyy-MM-dd'" (ngModelChange)="date=$event">
+              {{updateDate}}
             </div>
 
             <!-- <button type="submit" class="btn btn-primary" [disabled]="disableSubmitBtn">Submit</button> -->
 
             <div class=" modal-footer">
-              <button *ngIf="!disableSubmitBtn" type="button" class="btn btn-secondary">Close</button>
+              <!-- <button *ngIf="!disableSubmitBtn" type="button" class="btn btn-secondary">Close</button> -->
               <button type="submit" class="btn btn-primary">update changes</button>
             </div>
           </form>
