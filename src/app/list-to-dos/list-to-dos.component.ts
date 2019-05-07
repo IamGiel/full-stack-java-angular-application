@@ -5,6 +5,13 @@ import { Location } from "@angular/common";
 import { todo } from "./todo";
 import { TodoDataService } from "../service/todo-data.service";
 import { routerNgProbeToken } from "@angular/router/src/router_module";
+import {
+  FormBuilder,
+  Validators,
+  FormGroup,
+  RequiredValidator
+} from "@angular/forms";
+import { FormControl } from "@angular/forms";
 
 @Component({
   selector: "app-list-to-dos",
@@ -32,14 +39,22 @@ export class ListToDosComponent implements OnInit {
   payload: any = {};
   updatedPayload: any = {};
   descriptionOfCompletedList;
+  form;
 
   name: any = sessionStorage.getItem("authenticateUser");
   constructor(
+    private fb: FormBuilder,
     private _location: Location,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private todoService: TodoDataService
-  ) {}
+  ) {
+    this.form = new FormGroup({
+      description: new FormControl("", Validators.required),
+      date: new FormControl(this.date, Validators.required),
+      isDone: new FormControl(this.isCompleted)
+    });
+  }
   // PARENT
   ngOnInit() {
     this.name = this.activatedRoute.snapshot.params["name"];
@@ -55,17 +70,17 @@ export class ListToDosComponent implements OnInit {
   }
 
   generateDate(date) {
-    var current = new Date(date); //'Mar 11 2015' current.getTime() = 1426060964567
-    var followingDay = new Date(current.getTime() + 86400000); // + 1 day in ms
-    followingDay.toLocaleDateString();
-    console.log("this is follwong day " + followingDay.toLocaleDateString());
+    // var current = new Date(date); //'Mar 11 2015' current.getTime() = 1426060964567
+    // var followingDay = new Date(current.getTime() + 86400000); // + 1 day in ms
+    // followingDay.toLocaleDateString();
+    // console.log("this is follwong day " + followingDay);
 
-    return followingDay.toLocaleDateString();
+    // return followingDay;
 
-    // // date = this.date;
-    // let isoDate = new Date(date).toISOString();
-    // console.log("this is date" + isoDate);
-    // return isoDate;
+    // date = this.date;
+    let isoDate = new Date(date).toISOString();
+    console.log("this is date" + isoDate);
+    return isoDate;
   }
 
   updateAnItem(event) {
@@ -79,7 +94,7 @@ export class ListToDosComponent implements OnInit {
     this.updatedPayload.description = this.updateDescription;
     this.updatedPayload.setDate = this.updateDate;
     console.log(this.updateDate);
-    this.setIsDone();
+    this.setIsDone(this.updateDate);
     this.updatedPayload.isDone = this.isCompleted;
     this.updatedPayload.id = id;
 
@@ -97,37 +112,39 @@ export class ListToDosComponent implements OnInit {
       );
   }
 
-  setIsDone() {
-    let selectedDate = new Date(this.updateDate);
-    let now = new Date();
-    if (selectedDate < now) {
-      this.isCompleted = true;
-      alert("true");
-    } else {
-      this.isCompleted = false;
-      alert("false");
-    }
-  }
-
   saveNewList(event) {
     console.log("saving");
     event.preventDefault();
-    this.generateDate(this.date);
-    this.payload.description = this.description;
-    this.payload.setDate = this.date;
-    this.setIsDone();
-    this.payload.isDone = this.isCompleted;
-    console.log("this is payload " + JSON.stringify(this.payload));
+    // this.generateDate(this.date);
+
+    this.payload.description = this.form.value.description;
+    this.payload.setDate = this.form.value.date;
+    this.setIsDone(this.form.value.date);
+    this.payload.isDone = this.form.value.isDone;
+    console.log("this is form value " + JSON.stringify(this.form.value));
     this.todoService.saveNewList(this.name, this.payload).subscribe(
       response => {
         console.log(response);
         this.resetForm();
         this.loadAllList();
+        this.router.navigate([`/users/${this.userName}/list-to-dos`]);
       },
       error => {
         console.log(error);
       }
     );
+  }
+
+  setIsDone(date) {
+    let selectedDate = new Date(date);
+    let now = new Date();
+    if (selectedDate < now) {
+      this.isCompleted = true;
+      // alert("true");
+    } else {
+      this.isCompleted = false;
+      // alert("false");
+    }
   }
 
   resetForm() {
