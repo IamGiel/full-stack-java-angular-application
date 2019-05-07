@@ -63,25 +63,28 @@
 
         <!-- savenew list -->
         <div class="modal-body" *ngIf="!showUpdateBtn">
-          <form #saveNewListForm="ngForm" (ngSubmit)="!saveNewListForm.invalid && saveNewList($event)">
-
-
+          <form #saveNewListForm="ngForm" (ngSubmit)="!saveNewListForm.invalid && saveNewList($event)"
+            [formGroup]="form">
+            <!-- description -->
             <div class="form-group">
               <label for="description">Describe it:</label>
-              <input name="description" type="text" class="form-control" id="description"
-                placeholder="Describe the activity" [(ngModel)]="description">
+              <input name="description" type="text" class="form-control" id="description" formControlName="description"
+                placeholder="Describe the activity" required>
+              <p *ngIf="form.get('description').hasError('required') && saveNewListForm.submitted">Name is required</p>
             </div>
+            <!-- date -->
             <div class="form-group">
               <label for="date">Target Date:</label>
               <input name="date" type="date" class="form-control" id="date" placeholder="Complete it on what date?"
-                [ngModel]="date | date:'yyyy-MM-dd'" (ngModelChange)="date=$event">
+                formControlName="date" required>
+              <p *ngIf="form.get('date').hasError('required') && saveNewListForm.submitted">Date is required
+              </p>
             </div>
-
+            <small *ngIf="form.hasError('required', 'formCtrlName') && saveNewListForm.submitted">
+              Required!
+            </small>
             <button type="submit" class="btn btn-primary" [disabled]="disableSubmitBtn">Submit</button>
-
-
           </form>
-
         </div>
 
 
