@@ -99,7 +99,7 @@
             <div class="form-group">
               <label for="date">Update the target date:</label>
               <input name="date" type="date" class="form-control" id="date" placeholder="Complete it on what date?"
-                [ngModel]="updateDate | date:'yyyy-MM-dd'" (ngModelChange)="date=$event">
+                [ngModel]="updateDate" (ngModelChange)="date=$event">
               {{updateDate}}
             </div>
 

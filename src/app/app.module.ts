@@ -12,7 +12,8 @@ import { HeaderComponent } from "./header/header.component";
 import { FooterComponent } from "./footer/footer.component";
 import { LandingPageComponent } from "./landing-page/landing-page.component";
 import { LogoutComponent } from "./logout/logout.component";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { HttpInterceptorService } from "./service/http/http-interceptor.service";
 
 @NgModule({
   declarations: [
@@ -34,7 +35,13 @@ import { HttpClientModule } from "@angular/common/http";
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
