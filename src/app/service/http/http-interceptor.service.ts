@@ -33,6 +33,8 @@ export class HttpInterceptorService implements HttpInterceptor {
       }
     });
 
+    console.log("http interceptor header " + req);
+
     return next.handle(req);
   }
 }
