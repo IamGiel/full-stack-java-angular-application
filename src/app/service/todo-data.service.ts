@@ -42,7 +42,8 @@ export class TodoDataService {
   getSingleTodoItem(Gel, id) {
     console.log("get single todo ");
     let thisData = this.http.get<todo[]>(
-      ` http://localhost:9191/users/${Gel}/todo/${id}`
+      ` http://localhost:9191/users/${Gel}/todo/${id}`,
+      { headers }
     );
 
     return thisData;
@@ -61,7 +62,8 @@ export class TodoDataService {
     console.log("update to do ");
     let thisData = this.http.put(
       ` http://localhost:9191/users/${Gel}/todo/${id}`,
-      body
+      body,
+      { headers }
     );
 
     return thisData;
@@ -71,7 +73,7 @@ export class TodoDataService {
     let thisData = this.http.post<todo[]>(
       `http://localhost:9191/users/${Gel}/todo`,
       body,
-      httpOptions
+      { headers }
     );
     return thisData;
   }
