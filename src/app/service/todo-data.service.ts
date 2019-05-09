@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import { todo } from "../list-to-dos/todo";
+import { WelcomeDataService } from "./welcome-data.service";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -9,20 +10,30 @@ const httpOptions = {
   })
 };
 
+let username = "user";
+let password = "password";
+
 const headers = new HttpHeaders()
   .set("Content-Type", "application/json")
-  .set("Accept", "text/plain");
+  //.set("Accept", "text/plain")
+  .set("Authorization", "Basic " + window.btoa(username + ":" + password));
 
 @Injectable({
   providedIn: "root"
 })
 export class TodoDataService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private welcomeDataService: WelcomeDataService,
+    private http: HttpClient
+  ) {}
 
   retrieveAllTodos(Gel) {
     console.log("get all todo ");
+    console.log(headers);
+
     let thisData = this.http.get<todo[]>(
-      ` http://localhost:9191/users/${Gel}/all-todos`
+      ` http://localhost:9191/users/${Gel}/all-todos`,
+      { headers }
     );
 
     return thisData;
