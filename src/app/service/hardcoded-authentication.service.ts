@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
+import { WelcomeDataService } from "../service/welcome-data.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class HardcodedAuthenticationService {
-  constructor() {}
+  constructor(private welcomeData: WelcomeDataService) {}
 
   authenticate(user, password) {
     // console.log("before .... " + this.isUserLoggedIn());
