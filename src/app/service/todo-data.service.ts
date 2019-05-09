@@ -52,7 +52,8 @@ export class TodoDataService {
   deleteItemFromList(Gel, id) {
     console.log("delete a todo ");
     let thisData = this.http.delete<todo[]>(
-      `http://localhost:9191/users/${Gel}/todo/${id}`
+      `http://localhost:9191/users/${Gel}/todo/${id}`,
+      { headers }
     );
 
     return thisData;

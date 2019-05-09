@@ -58,7 +58,7 @@ export class ListToDosComponent implements OnInit {
   // PARENT
   ngOnInit() {
     this.name = this.activatedRoute.snapshot.params["name"];
-    console.log(this.name);
+    console.log(this.userName);
     this.loadAllList();
   }
 
@@ -154,6 +154,7 @@ export class ListToDosComponent implements OnInit {
   }
 
   loadAllList() {
+    console.log(this.name);
     this.todoService.retrieveAllTodos(this.name).subscribe(
       response => {
         console.log(response);
