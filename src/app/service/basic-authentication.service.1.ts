@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { WelcomeDataService, HelloWorldBean } from "./welcome-data.service";
 import { HttpHeaders, HttpClient } from "@angular/common/http";
+import { map } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root"
@@ -46,10 +47,20 @@ export class BasicAuthenticationService {
     });
     console.log("header " + the_Header);
 
-    let thisData = this.http.get<AuthenticationBean>(
-      `http://localhost:9191/basicAuth`,
-      { headers: the_Header }
-    );
+    let thisData = this.http
+      .get<AuthenticationBean>(`http://localhost:9191/basicAuth`, {
+        headers: the_Header
+      })
+      .pipe(
+        // this pipe method allows us to handle is the call is successful to soemthing
+        // if proper response comes back - map it
+        map(data => {
+          // if data comes back, set username to storage and retrn data
+          // whoever subscribves will get this data
+          sessionStorage.setItem("AuthenticateUser", username);
+          return data;
+        })
+      );
 
     return thisData;
   }
