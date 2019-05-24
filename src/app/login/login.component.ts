@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate(["/welcome", this.newUserCredential.username]);
         },
         err => {
-          console.log(err);
+          console.log("error in authentication erred block" + err);
           this.router.navigate(["error"]);
         }
       );

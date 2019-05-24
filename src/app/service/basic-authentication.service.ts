@@ -23,6 +23,17 @@ export class BasicAuthenticationService {
   //   }
   // }`
 
+  // utility methods
+  getAuthenticatedUser() {
+    return sessionStorage.getItem("authenticateUser");
+  }
+
+  getAuthenticatedToken() {
+    if (this.getAuthenticatedUser) {
+      return sessionStorage.getItem("token");
+    }
+  }
+
   isUserLoggedIn() {
     let user = sessionStorage.getItem("authenticateUser");
 
@@ -42,31 +53,22 @@ export class BasicAuthenticationService {
   executeBasicAuthenticationService(username, password) {
     const headers = new HttpHeaders()
       .set("Content-Type", "application/json")
-      //.set("Accept", "text/plain")
       .set("Authorization", "Basic " + window.btoa(username + ":" + password));
-    // let basicAuthHeaderString =
-    //   "Basic " + window.btoa(username + ":" + password); //encode byte 64 encoding window.btoa
-    // let the_Header = new HttpHeaders({
-    //   Authorization: basicAuthHeaderString
-    // });
-    console.log("header " + JSON.stringify(headers));
+    let basicAuthHeaderString =
+      "Basic " + window.btoa(username + ":" + password); //encode byte 64 encoding window.btoa
 
-    let thisData = this.http
+    return this.http
       .get<AuthenticationBean>(`http://localhost:9191/basicAuth`, {
         headers
       })
       .pipe(
-        // this pipe method allows us to handle is the call is successful to soemthing
-        // if proper response comes back - map it
         map(data => {
-          // if data comes back, set username to storage and retrn data
-          // whoever subscribves will get this data
           sessionStorage.setItem("authenticateUser", username);
+          sessionStorage.setItem("token", basicAuthHeaderString);
+          console.log("basicAuthHeaderString ", basicAuthHeaderString);
           return data;
         })
       );
-
-    return thisData;
   }
 
   // basicAuthHeader() {
