@@ -13,7 +13,7 @@ import { FooterComponent } from "./footer/footer.component";
 import { LandingPageComponent } from "./landing-page/landing-page.component";
 import { LogoutComponent } from "./logout/logout.component";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { HttpInterceptorService } from "./service/http/http-interceptor.service";
+// import { HttpInterceptorService } from "./service/http/http-interceptor.service";
 
 @NgModule({
   declarations: [
@@ -36,11 +36,11 @@ import { HttpInterceptorService } from "./service/http/http-interceptor.service"
     ReactiveFormsModule
   ],
   providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HttpInterceptorService,
-      multi: true
-    }
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: HttpInterceptorService,
+    //   multi: true
+    // }
   ],
   bootstrap: [AppComponent]
 })

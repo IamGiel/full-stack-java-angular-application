@@ -12,16 +12,16 @@ export class BasicAuthenticationService {
     private welcomeData: WelcomeDataService
   ) {}
 
-  authenticate(user, password) {
-    // console.log("before .... " + this.isUserLoggedIn());
-    if (user === "Gel" && password === "password") {
-      sessionStorage.setItem("authenticateUser", user);
-      // console.log("after .... " + this.isUserLoggedIn());
-      return true;
-    } else {
-      return false;
-    }
-  }
+  // `authenticate(user, password) {
+  //   // console.log("before .... " + this.isUserLoggedIn());
+  //   if (user === "Gel" && password === "password") {
+  //     sessionStorage.setItem("authenticateUser", user);
+  //     // console.log("after .... " + this.isUserLoggedIn());
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }`
 
   isUserLoggedIn() {
     let user = sessionStorage.getItem("authenticateUser");
@@ -40,16 +40,20 @@ export class BasicAuthenticationService {
   }
 
   executeBasicAuthenticationService(username, password) {
-    let basicAuthHeaderString =
-      "Basic " + window.btoa(username + ":" + password); //encode byte 64 encoding window.btoa
-    let the_Header = new HttpHeaders({
-      Authorization: basicAuthHeaderString
-    });
-    console.log("header " + the_Header);
+    const headers = new HttpHeaders()
+      .set("Content-Type", "application/json")
+      //.set("Accept", "text/plain")
+      .set("Authorization", "Basic " + window.btoa(username + ":" + password));
+    // let basicAuthHeaderString =
+    //   "Basic " + window.btoa(username + ":" + password); //encode byte 64 encoding window.btoa
+    // let the_Header = new HttpHeaders({
+    //   Authorization: basicAuthHeaderString
+    // });
+    console.log("header " + JSON.stringify(headers));
 
     let thisData = this.http
       .get<AuthenticationBean>(`http://localhost:9191/basicAuth`, {
-        headers: the_Header
+        headers
       })
       .pipe(
         // this pipe method allows us to handle is the call is successful to soemthing
@@ -57,7 +61,7 @@ export class BasicAuthenticationService {
         map(data => {
           // if data comes back, set username to storage and retrn data
           // whoever subscribves will get this data
-          sessionStorage.setItem("AuthenticateUser", username);
+          sessionStorage.setItem("authenticateUser", username);
           return data;
         })
       );
