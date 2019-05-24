@@ -12,14 +12,25 @@ export class BasicAuthenticationService {
     private welcomeData: WelcomeDataService
   ) {}
 
-  authenticate(user, password) {
-    // console.log("before .... " + this.isUserLoggedIn());
-    if (user === "Gel" && password === "password") {
-      sessionStorage.setItem("authenticateUser", user);
-      // console.log("after .... " + this.isUserLoggedIn());
-      return true;
-    } else {
-      return false;
+  // `authenticate(user, password) {
+  //   // console.log("before .... " + this.isUserLoggedIn());
+  //   if (user === "Gel" && password === "password") {
+  //     sessionStorage.setItem("authenticateUser", user);
+  //     // console.log("after .... " + this.isUserLoggedIn());
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }`
+
+  // utility methods
+  getAuthenticatedUser() {
+    return sessionStorage.getItem("authenticateUser");
+  }
+
+  getAuthenticatedToken() {
+    if (this.getAuthenticatedUser) {
+      return sessionStorage.getItem("token");
     }
   }
 
@@ -40,29 +51,24 @@ export class BasicAuthenticationService {
   }
 
   executeBasicAuthenticationService(username, password) {
+    const headers = new HttpHeaders()
+      .set("Content-Type", "application/json")
+      .set("Authorization", "Basic " + window.btoa(username + ":" + password));
     let basicAuthHeaderString =
       "Basic " + window.btoa(username + ":" + password); //encode byte 64 encoding window.btoa
-    let the_Header = new HttpHeaders({
-      Authorization: basicAuthHeaderString
-    });
-    console.log("header " + the_Header);
 
-    let thisData = this.http
+    return this.http
       .get<AuthenticationBean>(`http://localhost:9191/basicAuth`, {
-        headers: the_Header
+        headers
       })
       .pipe(
-        // this pipe method allows us to handle is the call is successful to soemthing
-        // if proper response comes back - map it
         map(data => {
-          // if data comes back, set username to storage and retrn data
-          // whoever subscribves will get this data
-          sessionStorage.setItem("AuthenticateUser", username);
+          sessionStorage.setItem("authenticateUser", username);
+          sessionStorage.setItem("token", basicAuthHeaderString);
+          console.log("basicAuthHeaderString ", basicAuthHeaderString);
           return data;
         })
       );
-
-    return thisData;
   }
 
   // basicAuthHeader() {
