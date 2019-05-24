@@ -2,6 +2,10 @@ import { Injectable } from "@angular/core";
 import { WelcomeDataService, HelloWorldBean } from "./welcome-data.service";
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
+import { API_URL } from "../app.constants";
+
+export const AUTHENTICATED_USER = "authenticateUser";
+export const TOKEN = "token";
 
 @Injectable({
   providedIn: "root"
@@ -25,17 +29,17 @@ export class BasicAuthenticationService {
 
   // utility methods
   getAuthenticatedUser() {
-    return sessionStorage.getItem("authenticateUser");
+    return sessionStorage.getItem(AUTHENTICATED_USER);
   }
 
   getAuthenticatedToken() {
     if (this.getAuthenticatedUser) {
-      return sessionStorage.getItem("token");
+      return sessionStorage.getItem(TOKEN);
     }
   }
 
   isUserLoggedIn() {
-    let user = sessionStorage.getItem("authenticateUser");
+    let user = sessionStorage.getItem(AUTHENTICATED_USER);
 
     if (user === null) {
       //user not logged in
@@ -58,13 +62,13 @@ export class BasicAuthenticationService {
       "Basic " + window.btoa(username + ":" + password); //encode byte 64 encoding window.btoa
 
     return this.http
-      .get<AuthenticationBean>(`http://localhost:9191/basicAuth`, {
+      .get<AuthenticationBean>(`${API_URL}/basicAuth`, {
         headers
       })
       .pipe(
         map(data => {
-          sessionStorage.setItem("authenticateUser", username);
-          sessionStorage.setItem("token", basicAuthHeaderString);
+          sessionStorage.setItem(AUTHENTICATED_USER, username);
+          sessionStorage.setItem(TOKEN, basicAuthHeaderString);
           console.log("basicAuthHeaderString ", basicAuthHeaderString);
           return data;
         })

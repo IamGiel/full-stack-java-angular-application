@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import { todo } from "../list-to-dos/todo";
 import { WelcomeDataService } from "./welcome-data.service";
+import { API_URL } from "../app.constants";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -31,10 +32,9 @@ export class TodoDataService {
     console.log("get all todo ");
     console.log(headers);
 
-    let thisData = this.http.get<todo[]>(
-      ` http://localhost:9191/users/${Gel}/all-todos`,
-      { headers }
-    );
+    let thisData = this.http.get<todo[]>(` ${API_URL}/users/${Gel}/all-todos`, {
+      headers
+    });
 
     return thisData;
   }
@@ -42,7 +42,7 @@ export class TodoDataService {
   getSingleTodoItem(Gel, id) {
     console.log("get single todo ");
     let thisData = this.http.get<todo[]>(
-      ` http://localhost:9191/users/${Gel}/todo/${id}`,
+      ` ${API_URL}/users/${Gel}/todo/${id}`,
       { headers }
     );
 
@@ -52,7 +52,7 @@ export class TodoDataService {
   deleteItemFromList(Gel, id) {
     console.log("delete a todo ");
     let thisData = this.http.delete<todo[]>(
-      `http://localhost:9191/users/${Gel}/todo/${id}`,
+      `${API_URL}/users/${Gel}/todo/${id}`,
       { headers }
     );
 
@@ -61,18 +61,16 @@ export class TodoDataService {
   // /users/{user}/todo/{id}
   updateAnItem(Gel, id, body: any) {
     console.log("update to do ");
-    let thisData = this.http.put(
-      ` http://localhost:9191/users/${Gel}/todo/${id}`,
-      body,
-      { headers }
-    );
+    let thisData = this.http.put(` ${API_URL}/users/${Gel}/todo/${id}`, body, {
+      headers
+    });
 
     return thisData;
   }
   saveNewList(Gel, body: todo) {
     console.log("saving a new todo");
     let thisData = this.http.post<todo[]>(
-      `http://localhost:9191/users/${Gel}/todo`,
+      `${API_URL}/users/${Gel}/todo`,
       body,
       { headers }
     );
