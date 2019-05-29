@@ -16,32 +16,24 @@ import { BasicAuthenticationService } from "../basic-authentication.service";
 // adding the authorization header
 // then we are sending it to the next Http handler
 export class HttpInterceptorService implements HttpInterceptor {
-  constructor(private privateAuthService: BasicAuthenticationService) {}
+  constructor(private basicAuthService: BasicAuthenticationService) {}
 
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    // let username: "user";
-    // let password: "password";
-    // let basicAuthHeaderString =
-    //   "Basic " + window.btoa(username + ":" + password); //encode byte 64 encoding window.btoa
-    // console.log("header string " + basicAuthHeaderString);
-
-    let basicAuthHeaderString = this.privateAuthService.getAuthenticatedToken();
-    let user = this.privateAuthService.getAuthenticatedUser();
+    let basicAuthHeaderString = this.basicAuthService.getAuthenticatedToken();
+    console.log("basicAuthHeaderString ", basicAuthHeaderString);
+    let user = this.basicAuthService.getAuthenticatedUser();
+    console.log("user ", user);
 
     if (basicAuthHeaderString && user) {
-      req = req.clone({
+      req.clone({
         setHeaders: {
-          Authoriation: basicAuthHeaderString
-          //   "Content-Type": "application/json"
+          Authorization: basicAuthHeaderString
         }
       });
     }
-
-    console.log("http interceptor header " + JSON.stringify(req));
-
     return next.handle(req);
   }
 }

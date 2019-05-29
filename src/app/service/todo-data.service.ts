@@ -4,20 +4,8 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { todo } from "../list-to-dos/todo";
 import { WelcomeDataService } from "./welcome-data.service";
 import { API_URL } from "../app.constants";
-
-const httpOptions = {
-  headers: new HttpHeaders({
-    "Content-Type": "application/json"
-  })
-};
-
-let username = "user";
-let password = "password";
-
-const headers = new HttpHeaders()
-  .set("Content-Type", "application/json")
-  //.set("Accept", "text/plain")
-  .set("Authorization", "Basic " + window.btoa(username + ":" + password));
+import { JPA_URL } from "../app.constants";
+import { BasicAuthenticationService } from "./basic-authentication.service";
 
 @Injectable({
   providedIn: "root"
@@ -25,16 +13,28 @@ const headers = new HttpHeaders()
 export class TodoDataService {
   constructor(
     private welcomeDataService: WelcomeDataService,
+    private basicAuth: BasicAuthenticationService,
     private http: HttpClient
   ) {}
 
+  token = this.basicAuth.getAuthenticatedToken();
+
+  httpOptions = {
+    headers: new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: `${this.token}`
+    })
+  };
+
   retrieveAllTodos(Gel) {
     console.log("get all todo ");
-    console.log(headers);
+    console.log("this httpOptions ", this.httpOptions);
+    // console.log(headers);
 
-    let thisData = this.http.get<todo[]>(` ${API_URL}/users/${Gel}/all-todos`, {
-      headers
-    });
+    let thisData = this.http.get<todo[]>(
+      `${JPA_URL}/users/${Gel}/all-todos`,
+      this.httpOptions
+    );
 
     return thisData;
   }
@@ -42,8 +42,8 @@ export class TodoDataService {
   getSingleTodoItem(Gel, id) {
     console.log("get single todo ");
     let thisData = this.http.get<todo[]>(
-      ` ${API_URL}/users/${Gel}/todo/${id}`,
-      { headers }
+      `${JPA_URL}/users/${Gel}/todo/${id}`,
+      this.httpOptions
     );
 
     return thisData;
@@ -52,8 +52,7 @@ export class TodoDataService {
   deleteItemFromList(Gel, id) {
     console.log("delete a todo ");
     let thisData = this.http.delete<todo[]>(
-      `${API_URL}/users/${Gel}/todo/${id}`,
-      { headers }
+      `${API_URL}/users/${Gel}/todo/${id}`
     );
 
     return thisData;
@@ -61,9 +60,7 @@ export class TodoDataService {
   // /users/{user}/todo/{id}
   updateAnItem(Gel, id, body: any) {
     console.log("update to do ");
-    let thisData = this.http.put(` ${API_URL}/users/${Gel}/todo/${id}`, body, {
-      headers
-    });
+    let thisData = this.http.put(` ${API_URL}/users/${Gel}/todo/${id}`, body);
 
     return thisData;
   }
@@ -72,7 +69,7 @@ export class TodoDataService {
     let thisData = this.http.post<todo[]>(
       `${API_URL}/users/${Gel}/todo`,
       body,
-      { headers }
+      this.httpOptions
     );
     return thisData;
   }

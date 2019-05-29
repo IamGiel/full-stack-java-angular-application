@@ -17,15 +17,15 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private basicAuthService: BasicAuthenticationService,
-    private router: Router,
-    private hardCodedAuth: HardcodedAuthenticationService
-  ) {}
+    private router: Router
+  ) // private hardCodedAuth: HardcodedAuthenticationService
+  {}
 
   ngOnInit() {}
 
   handleBasicLogin() {
     this.basicAuthService
-      .executeBasicAuthenticationService(this.usernameInput, this.passwordInput)
+      .executeJWTAuthenticationService(this.usernameInput, this.passwordInput)
       .subscribe(
         data => {
           console.log(
@@ -47,27 +47,4 @@ export class LoginComponent implements OnInit {
         }
       );
   }
-
-  // handLogin($event) {
-  //   $event.preventDefault();
-
-  //   this.newUserCredential.username = this.usernameInput;
-  //   this.newUserCredential.password = this.passwordInput;
-
-  //   let test = $event.target.addEventListener.name;
-  //   console.log(this.newUserCredential);
-
-  //   if (
-  //     this.hardCodedAuth.authenticate(
-  //       this.newUserCredential.username,
-  //       this.newUserCredential.password
-  //     )
-  //   ) {
-  //     // alert("it works");
-  //     this.router.navigate(["welcome", this.newUserCredential.username]);
-  //   } else {
-  //     // alert("wrong credentials");
-  //     this.router.navigate(["error"]);
-  //   }
-  // }
 }
