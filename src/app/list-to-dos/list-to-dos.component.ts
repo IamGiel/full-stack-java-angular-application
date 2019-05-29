@@ -58,7 +58,7 @@ export class ListToDosComponent implements OnInit {
   // PARENT
   ngOnInit() {
     this.name = this.activatedRoute.snapshot.params["name"];
-    console.log(this.userName);
+    console.log("this is username " + this.name);
     this.loadAllList();
   }
 
@@ -127,7 +127,7 @@ export class ListToDosComponent implements OnInit {
         console.log(response);
         this.resetForm();
         this.loadAllList();
-        this.router.navigate([`/users/${this.userName}/list-to-dos`]);
+        this.router.navigate([`/users/${this.name}/list-to-dos`]);
       },
       error => {
         console.log(error);
@@ -157,12 +157,12 @@ export class ListToDosComponent implements OnInit {
     console.log(this.name);
     this.todoService.retrieveAllTodos(this.name).subscribe(
       response => {
-        console.log(response);
+        console.log("this is retrieve all ", response);
         this.toDos = response;
       },
       error => {
         this.loading = true;
-        console.log(error);
+        console.log("error on retreive all ", error);
       }
     );
   }
@@ -172,7 +172,7 @@ export class ListToDosComponent implements OnInit {
     console.log(event.target.id);
     this.id = event.target.id;
 
-    this.todoService.getSingleTodoItem(this.userName, this.id).subscribe(
+    this.todoService.getSingleTodoItem(this.name, this.id).subscribe(
       res => {
         console.log(res);
         let data: any = res;

@@ -16,24 +16,13 @@ export class BasicAuthenticationService {
     private welcomeData: WelcomeDataService
   ) {}
 
-  // `authenticate(user, password) {
-  //   // console.log("before .... " + this.isUserLoggedIn());
-  //   if (user === "Gel" && password === "password") {
-  //     sessionStorage.setItem("authenticateUser", user);
-  //     // console.log("after .... " + this.isUserLoggedIn());
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }`
-
-  // utility methods
   getAuthenticatedUser() {
     return sessionStorage.getItem(AUTHENTICATED_USER);
   }
 
   getAuthenticatedToken() {
     if (this.getAuthenticatedUser) {
+      console.log("get authenticated user ", sessionStorage.getItem(TOKEN));
       return sessionStorage.getItem(TOKEN);
     }
   }
@@ -54,26 +43,41 @@ export class BasicAuthenticationService {
     sessionStorage.clear();
   }
 
-  executeBasicAuthenticationService(username, password) {
-    const headers = new HttpHeaders()
-      .set("Content-Type", "application/json")
-      .set("Authorization", "Basic " + window.btoa(username + ":" + password));
-    let basicAuthHeaderString =
-      "Basic " + window.btoa(username + ":" + password); //encode byte 64 encoding window.btoa
-
+  executeJWTAuthenticationService(username, password) {
     return this.http
-      .get<AuthenticationBean>(`${API_URL}/basicAuth`, {
-        headers
+      .post<AuthenticationBean>(`${API_URL}/authenticate`, {
+        username,
+        password
       })
       .pipe(
         map(data => {
           sessionStorage.setItem(AUTHENTICATED_USER, username);
-          sessionStorage.setItem(TOKEN, basicAuthHeaderString);
-          console.log("basicAuthHeaderString ", basicAuthHeaderString);
+          sessionStorage.setItem(TOKEN, `Bearer ${data.token}`);
           return data;
         })
       );
   }
+
+  // executeBasicAuthenticationService(username, password) {
+  //   const headers = new HttpHeaders()
+  //     .set("Content-Type", "application/json")
+  //     .set("Authorization", "Basic " + window.btoa(username + ":" + password));
+  //   let basicAuthHeaderString =
+  //     "Basic " + window.btoa(username + ":" + password); //encode byte 64 encoding window.btoa
+
+  //   return this.http
+  //     .get<AuthenticationBean>(`${API_URL}/basicAuth`, {
+  //       headers
+  //     })
+  //     .pipe(
+  //       map(data => {
+  //         sessionStorage.setItem(AUTHENTICATED_USER, username);
+  //         sessionStorage.setItem(TOKEN, basicAuthHeaderString);
+  //         console.log("basicAuthHeaderString ", basicAuthHeaderString);
+  //         return data;
+  //       })
+  //     );
+  // }
 
   // basicAuthHeader() {
   //   let username: "user";
@@ -86,5 +90,6 @@ export class BasicAuthenticationService {
 }
 
 export class AuthenticationBean {
+  token: any;
   constructor(public message: String) {}
 }
