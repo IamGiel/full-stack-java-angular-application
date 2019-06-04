@@ -12,6 +12,7 @@ import {
   RequiredValidator
 } from "@angular/forms";
 import { FormControl } from "@angular/forms";
+import { connectableObservableDescriptor } from "rxjs/internal/observable/ConnectableObservable";
 
 @Component({
   selector: "app-list-to-dos",
@@ -70,14 +71,6 @@ export class ListToDosComponent implements OnInit {
   }
 
   generateDate(date) {
-    // var current = new Date(date); //'Mar 11 2015' current.getTime() = 1426060964567
-    // var followingDay = new Date(current.getTime() + 86400000); // + 1 day in ms
-    // followingDay.toLocaleDateString();
-    // console.log("this is follwong day " + followingDay);
-
-    // return followingDay;
-
-    // date = this.date;
     let isoDate = new Date(date).toISOString();
     console.log("this is date" + isoDate);
     return isoDate;
@@ -114,7 +107,7 @@ export class ListToDosComponent implements OnInit {
 
   saveNewList(event) {
     console.log("saving");
-    event.preventDefault();
+    // event.preventDefault();
     // this.generateDate(this.date);
 
     this.payload.description = this.form.value.description;
@@ -138,6 +131,8 @@ export class ListToDosComponent implements OnInit {
   setIsDone(date) {
     let selectedDate = new Date(date);
     let now = new Date();
+    console.log("selected Date ", selectedDate);
+    console.log("now Date ", now);
     if (selectedDate < now) {
       this.isCompleted = true;
       // alert("true");
@@ -145,6 +140,8 @@ export class ListToDosComponent implements OnInit {
       this.isCompleted = false;
       // alert("false");
     }
+
+    console.log("is completed ", this.isCompleted);
   }
 
   resetForm() {
