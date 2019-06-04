@@ -3,8 +3,8 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import { todo } from "../list-to-dos/todo";
 import { WelcomeDataService } from "./welcome-data.service";
-import { API_URL } from "../app.constants";
 import { JPA_URL } from "../app.constants";
+import { API_URL } from "../app.constants";
 import { BasicAuthenticationService } from "./basic-authentication.service";
 
 @Injectable({
@@ -32,9 +32,10 @@ export class TodoDataService {
     // console.log(headers);
 
     let thisData = this.http.get<todo[]>(
-      `${JPA_URL}/users/${Gel}/all-todos`,
+      `${API_URL}/users/${Gel}/all-todos`,
       this.httpOptions
     );
+    console.log("/all-todos ", thisData);
 
     return thisData;
   }
@@ -42,7 +43,7 @@ export class TodoDataService {
   getSingleTodoItem(Gel, id) {
     console.log("get single todo ");
     let thisData = this.http.get<todo[]>(
-      `${JPA_URL}/users/${Gel}/todo/${id}`,
+      `${API_URL}/users/${Gel}/todo/${id}`,
       this.httpOptions
     );
 

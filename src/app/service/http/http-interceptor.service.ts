@@ -23,7 +23,7 @@ export class HttpInterceptorService implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     let basicAuthHeaderString = this.basicAuthService.getAuthenticatedToken();
-    console.log("basicAuthHeaderString ", basicAuthHeaderString);
+    // console.log("basicAuthHeaderString ", basicAuthHeaderString);
     let user = this.basicAuthService.getAuthenticatedUser();
     console.log("user ", user);
 
