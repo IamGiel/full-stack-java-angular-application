@@ -53,7 +53,7 @@ export class TodoDataService {
   deleteItemFromList(Gel, id) {
     console.log("delete a todo ");
     let thisData = this.http.delete<todo[]>(
-      `${API_URL}/users/${Gel}/todo/${id}`
+      `${API_URL}/users/${Gel}/todo/${id}`, this.httpOptions
     );
 
     return thisData;
@@ -61,7 +61,7 @@ export class TodoDataService {
   // /users/{user}/todo/{id}
   updateAnItem(Gel, id, body: any) {
     console.log("update to do ");
-    let thisData = this.http.put(` ${API_URL}/users/${Gel}/todo/${id}`, body);
+    let thisData = this.http.put(` ${API_URL}/users/${Gel}/todo/${id}`, body, this.httpOptions);
 
     return thisData;
   }
