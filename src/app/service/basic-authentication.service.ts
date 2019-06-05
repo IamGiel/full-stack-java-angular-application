@@ -66,11 +66,10 @@ export class BasicAuthenticationService {
       "Basic " + window.btoa(username + ":" + password); //encode byte 64 encoding window.btoa
 
     return this.http
-      .get<AuthenticationBean>(`${API_URL}/basicAuth`, {
-        headers
-      })
-      .pipe(
-        map(data => {
+      .get<AuthenticationBean>(`${API_URL}/basicAuth`,{headers}
+      )
+      .pipe( // pipe "if theres succcess data, do this... "
+        map(data => { // map "stores the returned data to variabl, then do stuff with it.."
           sessionStorage.setItem(AUTHENTICATED_USER, username);
           sessionStorage.setItem(TOKEN, basicAuthHeaderString);
           console.log("basicAuthHeaderString ", basicAuthHeaderString);
